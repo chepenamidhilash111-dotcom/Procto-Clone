@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Online Doctor Consultation — MediCare</title>
+  <meta name="description" content="Consult top doctors online via audio/video call. 24/7 instant medical advice."/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💻</text></svg>"/>
+  <link rel="stylesheet" href="../css/style.css"/>
+</head>
+<body class="bg-gradient-main">
+
+<!-- Toast Container -->
+<div id="toast-container"></div>
+
+<!-- Navbar -->
+<nav class="navbar" id="main-navbar">
+  <div class="navbar-inner">
+    <a href="../index.html" class="navbar-logo">
+      <div class="logo-icon">🏥</div>
+      <span class="logo-text">Medi<span class="logo-dot">Care</span></span>
+    </a>
+
+    <div class="navbar-links" id="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="doctors.html">Find Doctors</a>
+      <a href="medicines.html">Medicines</a>
+      <a href="labs.html">Lab Tests</a>
+      <a href="consultation.html" class="active">Online Consult</a>
+    </div>
+
+    <div class="navbar-actions">
+      <button id="nav-login-btn" class="btn btn-secondary btn-sm" onclick="openModal('login-modal')">Sign In</button>
+      <button id="nav-register-btn" class="btn btn-primary btn-sm" onclick="openModal('register-modal')">Sign Up</button>
+
+      <div id="nav-user-menu" class="hidden flex gap-8 align-center" style="align-items:center;gap:10px">
+        <a href="profile.html" id="nav-user-avatar" class="user-avatar" title="My Profile">U</a>
+        <button id="logout-btn" class="btn btn-secondary btn-sm">Logout</button>
+      </div>
+
+      <button class="hamburger" id="hamburger-btn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="hidden" style="padding:16px 24px;border-top:1px solid var(--glass-border);background:rgba(6,13,26,0.95)">
+    <div style="display:flex;flex-direction:column;gap:16px;font-size:0.95rem">
+      <a href="../index.html">Home</a>
+      <a href="doctors.html">Find Doctors</a>
+      <a href="medicines.html">Medicines</a>
+      <a href="labs.html">Lab Tests</a>
+      <a href="consultation.html" class="active">Online Consult</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Container -->
+<div class="container" style="padding-top: 100px; padding-bottom: 60px;">
+  
+  <div style="text-align:center; margin-bottom: 40px;">
+    <span class="badge badge-teal" style="margin-bottom:8px; display:inline-block;">⚡ Instant 24/7 Connect</span>
+    <h1>Consult Top Doctors <span class="gradient-text">Online</span></h1>
+    <p style="color:var(--text-secondary); max-width:650px; margin:0 auto;">Connect with verified doctors in under 60 seconds. Video call, chat, and get digital prescriptions instantly.</p>
+  </div>
+
+  <!-- Symptoms Selector Grid -->
+  <h2 style="font-size:1.4rem; margin-bottom:20px;">What symptoms are you experiencing?</h2>
+  <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:16px; margin-bottom: 50px;">
+    <div class="glass-card symptom-card" onclick="startInstantConsult('General Physician', 'Fever & Cold')" style="padding:20px; text-align:center; cursor:pointer; transition:transform 0.2s ease, border-color 0.2s ease;">
+      <span style="font-size:2.5rem; display:block; margin-bottom:8px;">🤒</span>
+      <strong>Fever & Cough</strong>
+      <div style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">General Physician</div>
+    </div>
+    <div class="glass-card symptom-card" onclick="startInstantConsult('Dermatologist', 'Skin Rash / Acne')" style="padding:20px; text-align:center; cursor:pointer; transition:transform 0.2s ease, border-color 0.2s ease;">
+      <span style="font-size:2.5rem; display:block; margin-bottom:8px;">🧴</span>
+      <strong>Skin & Hair Care</strong>
+      <div style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">Dermatologist</div>
+    </div>
+    <div class="glass-card symptom-card" onclick="startInstantConsult('Pediatrician', 'Child Health')" style="padding:20px; text-align:center; cursor:pointer; transition:transform 0.2s ease, border-color 0.2s ease;">
+      <span style="font-size:2.5rem; display:block; margin-bottom:8px;">👶</span>
+      <strong>Child Health</strong>
+      <div style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">Pediatrician</div>
+    </div>
+    <div class="glass-card symptom-card" onclick="startInstantConsult('Psychiatrist', 'Stress & Anxiety')" style="padding:20px; text-align:center; cursor:pointer; transition:transform 0.2s ease, border-color 0.2s ease;">
+      <span style="font-size:2.5rem; display:block; margin-bottom:8px;">🧠</span>
+      <strong>Mental Health</strong>
+      <div style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">Psychiatrist</div>
+    </div>
+    <div class="glass-card symptom-card" onclick="startInstantConsult('Cardiologist', 'Chest Pain / BP')" style="padding:20px; text-align:center; cursor:pointer; transition:transform 0.2s ease, border-color 0.2s ease;">
+      <span style="font-size:2.5rem; display:block; margin-bottom:8px;">❤️</span>
+      <strong>Heart & BP</strong>
+      <div style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">Cardiologist</div>
+    </div>
+  </div>
+
+  <!-- Available Online Doctors -->
+  <h2 style="font-size:1.4rem; margin-bottom:20px;">Doctors Available Right Now 🟢</h2>
+  <div id="online-doctors-list" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:24px;">
+    <div style="text-align:center; grid-column: 1/-1; padding: 40px;">
+      <div class="spinner"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Consult Room Simulator Modal -->
+<div class="modal-overlay hidden" id="consult-room-modal">
+  <div class="modal-card" style="max-width:650px;">
+    <button class="modal-close" onclick="closeModal('consult-room-modal')">&times;</button>
+    <div class="modal-header">
+      <h2>🎥 Live Video Consultation Room</h2>
+      <p style="color:var(--text-secondary); font-size:0.9rem;">Connecting to doctor via secure encrypted stream...</p>
+    </div>
+
+    <!-- Video Placeholder Screen -->
+    <div style="background:var(--navy-900); border-radius:12px; height:240px; display:flex; flex-direction:column; justify-content:center; align-items:center; border:1px solid var(--glass-border); position:relative; overflow:hidden; margin-bottom:20px;">
+      <div id="video-connecting-state">
+        <div class="spinner" style="margin: 0 auto 12px;"></div>
+        <p style="color:var(--teal-400); font-weight:600;">Connecting with <span id="consult-doc-name">Doctor</span>...</p>
+      </div>
+      <div id="video-connected-state" class="hidden" style="text-align:center;">
+        <span style="font-size:3.5rem;">👨‍⚕️</span>
+        <h4 id="consult-connected-doc">Dr. Consulting</h4>
+        <span class="badge badge-teal" style="margin-top:6px; display:inline-block;">🟢 Call Active (00:15)</span>
+      </div>
+    </div>
+
+    <div style="display:flex; justify-content:center; gap:16px;">
+      <button class="btn btn-secondary" onclick="showToast('Microphone toggled', 'info')">🎙️ Mute</button>
+      <button class="btn btn-secondary" onclick="showToast('Camera toggled', 'info')">📹 Camera</button>
+      <button class="btn btn-danger" onclick="endConsultation()">📞 End Call</button>
+    </div>
+  </div>
+</div>
+
+<!-- Auth Modals -->
+<div class="modal-overlay hidden" id="login-modal">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeModal('login-modal')">&times;</button>
+    <div class="modal-header">
+      <h2>Welcome Back</h2>
+      <p style="color:var(--text-secondary); font-size:0.9rem;">Sign in to start online consultation</p>
+    </div>
+    <form id="login-form">
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input type="email" id="login-email" class="form-control" required placeholder="patient@example.com"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" id="login-password" class="form-control" required placeholder="••••••••"/>
+      </div>
+      <button type="submit" id="login-submit-btn" class="btn btn-primary" style="width:100%">Sign In</button>
+    </form>
+  </div>
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/consultation.js"></script>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Book Lab Tests & Health Checkups — MediCare</title>
+  <meta name="description" content="Book diagnostic lab tests and full body checkups with free home sample collection."/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧪</text></svg>"/>
+  <link rel="stylesheet" href="../css/style.css"/>
+</head>
+<body class="bg-gradient-main">
+
+<!-- Toast Container -->
+<div id="toast-container"></div>
+
+<!-- Navbar -->
+<nav class="navbar" id="main-navbar">
+  <div class="navbar-inner">
+    <a href="../index.html" class="navbar-logo">
+      <div class="logo-icon">🏥</div>
+      <span class="logo-text">Medi<span class="logo-dot">Care</span></span>
+    </a>
+
+    <div class="navbar-links" id="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="doctors.html">Find Doctors</a>
+      <a href="medicines.html">Medicines</a>
+      <a href="labs.html" class="active">Lab Tests</a>
+      <a href="consultation.html">Online Consult</a>
+    </div>
+
+    <div class="navbar-actions">
+      <button id="nav-login-btn" class="btn btn-secondary btn-sm" onclick="openModal('login-modal')">Sign In</button>
+      <button id="nav-register-btn" class="btn btn-primary btn-sm" onclick="openModal('register-modal')">Sign Up</button>
+
+      <div id="nav-user-menu" class="hidden flex gap-8 align-center" style="align-items:center;gap:10px">
+        <a href="profile.html" id="nav-user-avatar" class="user-avatar" title="My Profile">U</a>
+        <button id="logout-btn" class="btn btn-secondary btn-sm">Logout</button>
+      </div>
+
+      <button class="hamburger" id="hamburger-btn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="hidden" style="padding:16px 24px;border-top:1px solid var(--glass-border);background:rgba(6,13,26,0.95)">
+    <div style="display:flex;flex-direction:column;gap:16px;font-size:0.95rem">
+      <a href="../index.html">Home</a>
+      <a href="doctors.html">Find Doctors</a>
+      <a href="medicines.html">Medicines</a>
+      <a href="labs.html" class="active">Lab Tests</a>
+      <a href="consultation.html">Online Consult</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Container -->
+<div class="container" style="padding-top: 100px; padding-bottom: 60px;">
+  
+  <div style="text-align:center; margin-bottom: 40px;">
+    <span class="badge badge-teal" style="margin-bottom:8px; display:inline-block;">🧪 Diagnostic Labs</span>
+    <h1>Book <span class="gradient-text">Lab Tests</span> & Packages</h1>
+    <p style="color:var(--text-secondary); max-width:650px; margin:0 auto;">Certified NABL laboratories with free doorstep sample collection and digital reports within 24 hours.</p>
+  </div>
+
+  <!-- Highlights Banner -->
+  <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:16px; margin-bottom: 40px;">
+    <div class="glass-card" style="padding:16px 20px; display:flex; align-items:center; gap:12px;">
+      <span style="font-size:1.8rem;">🏠</span>
+      <div>
+        <strong style="color:var(--teal-400); display:block;">Free Sample Collection</strong>
+        <span style="font-size:0.8rem; color:var(--text-muted);">Hygiene phlebotomists</span>
+      </div>
+    </div>
+    <div class="glass-card" style="padding:16px 20px; display:flex; align-items:center; gap:12px;">
+      <span style="font-size:1.8rem;">📄</span>
+      <div>
+        <strong style="color:var(--teal-400); display:block;">Digital Reports</strong>
+        <span style="font-size:0.8rem; color:var(--text-muted);">Directly on your account</span>
+      </div>
+    </div>
+    <div class="glass-card" style="padding:16px 20px; display:flex; align-items:center; gap:12px;">
+      <span style="font-size:1.8rem;">🔬</span>
+      <div>
+        <strong style="color:var(--teal-400); display:block;">100% Certified Labs</strong>
+        <span style="font-size:0.8rem; color:var(--text-muted);">NABL & ISO Accredited</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search Filter -->
+  <div class="glass-card" style="padding: 20px; margin-bottom: 30px;">
+    <input type="text" id="lab-search-input" class="form-control" placeholder="Search lab tests (e.g. CBC, HbA1c, Thyroid, Lipid profile)..." />
+  </div>
+
+  <!-- Labs Grid -->
+  <div id="labs-grid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap:24px;">
+    <div style="text-align:center; grid-column: 1/-1; padding: 40px;">
+      <div class="spinner"></div>
+      <p style="margin-top:12px; color:var(--text-secondary);">Loading diagnostic tests...</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- Booking Modal -->
+<div class="modal-overlay hidden" id="lab-booking-modal">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeModal('lab-booking-modal')">&times;</button>
+    <div class="modal-header">
+      <h2 id="modal-test-title">Book Lab Test</h2>
+      <p style="color:var(--text-secondary); font-size:0.9rem;">Schedule doorstep sample collection</p>
+    </div>
+    <form id="lab-booking-form">
+      <div class="form-group">
+        <label class="form-label">Preferred Date</label>
+        <input type="date" id="lab-date" class="form-control" required/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Time Slot</label>
+        <select id="lab-slot" class="form-control" required>
+          <option value="">Select Time Slot</option>
+          <option>07:00 AM - 08:00 AM</option>
+          <option>08:00 AM - 09:00 AM</option>
+          <option>09:00 AM - 10:00 AM</option>
+          <option>10:00 AM - 11:00 AM</option>
+          <option>04:00 PM - 05:00 PM</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Collection Address</label>
+        <textarea id="lab-address" class="form-control" rows="2" required placeholder="Enter full address for sample pickup"></textarea>
+      </div>
+      
+      <div style="display:flex; justify-content:space-between; align-items:center; margin: 20px 0; padding-top:10px; border-top:1px solid var(--glass-border);">
+        <span style="color:var(--text-secondary);">Test Fee:</span>
+        <strong id="modal-test-fee" style="font-size:1.3rem; color:var(--teal-400);">₹0</strong>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width:100%;">Confirm Lab Appointment</button>
+    </form>
+  </div>
+</div>
+
+<!-- Auth Modals -->
+<div class="modal-overlay hidden" id="login-modal">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeModal('login-modal')">&times;</button>
+    <div class="modal-header">
+      <h2>Welcome Back</h2>
+      <p style="color:var(--text-secondary); font-size:0.9rem;">Sign in to manage appointments & orders</p>
+    </div>
+    <form id="login-form">
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input type="email" id="login-email" class="form-control" required placeholder="patient@example.com"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" id="login-password" class="form-control" required placeholder="••••••••"/>
+      </div>
+      <button type="submit" id="login-submit-btn" class="btn btn-primary" style="width:100%">Sign In</button>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="register-modal">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeModal('register-modal')">&times;</button>
+    <div class="modal-header">
+      <h2>Create Account</h2>
+      <p style="color:var(--text-secondary); font-size:0.9rem;">Join MediCare for personalized health services</p>
+    </div>
+    <form id="register-form">
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input type="text" id="reg-name" class="form-control" required placeholder="John Doe"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input type="email" id="reg-email" class="form-control" required placeholder="john@example.com"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phone Number</label>
+        <input type="tel" id="reg-phone" class="form-control" required placeholder="+91 9876543210"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" id="reg-password" class="form-control" required placeholder="Min 6 characters"/>
+      </div>
+      <button type="submit" id="register-submit-btn" class="btn btn-primary" style="width:100%">Create Account</button>
+    </form>
+  </div>
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/labs.js"></script>
+</body>
+</html>

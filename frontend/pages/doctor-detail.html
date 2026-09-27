@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Doctor Profile — MediCare</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏥</text></svg>"/>
+  <link rel="stylesheet" href="../css/style.css"/>
+</head>
+<body class="bg-gradient-main">
+
+<div id="toast-container"></div>
+
+<nav class="navbar" id="main-navbar">
+  <div class="navbar-inner">
+    <a href="../index.html" class="navbar-logo">
+      <div class="logo-icon">🏥</div>
+      <span class="logo-text">Medi<span class="logo-dot">Care</span></span>
+    </a>
+    <div class="navbar-links">
+      <a href="../index.html">Home</a>
+      <a href="doctors.html" class="active">Find Doctors</a>
+      <a href="medicines.html">Medicines</a>
+      <a href="labs.html">Lab Tests</a>
+      <a href="consultation.html">Online Consult</a>
+    </div>
+    <div class="navbar-actions">
+      <button id="nav-login-btn" class="btn btn-secondary btn-sm" onclick="openModal('login-modal')">Sign In</button>
+      <button id="nav-register-btn" class="btn btn-primary btn-sm" onclick="openModal('register-modal')">Sign Up</button>
+      <div id="nav-user-menu" class="hidden" style="display:none;align-items:center;gap:10px">
+        <a href="profile.html" id="nav-user-avatar" class="user-avatar">U</a>
+        <button id="logout-btn" class="btn btn-secondary btn-sm">Logout</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="page-wrapper" id="doctor-detail-wrapper">
+  <div class="loading-state"><div class="spinner"></div><p>Loading doctor profile...</p></div>
+</div>
+
+<!-- Booking Modal -->
+<div class="modal-overlay hidden" id="booking-modal">
+  <div class="modal-box" style="max-width:560px">
+    <div class="modal-header">
+      <div class="modal-title">Book Appointment 📅</div>
+      <button class="modal-close" onclick="closeModal('booking-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="booking-doctor-info" style="margin-bottom:20px;padding:16px;background:rgba(255,255,255,0.03);border-radius:var(--radius-md);border:1px solid var(--glass-border)"></div>
+
+      <div class="form-group">
+        <label class="form-label">Consultation Type</label>
+        <div style="display:flex;gap:10px">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:0.9rem;padding:10px 16px;border-radius:var(--radius-md);border:1px solid var(--glass-border);flex:1;transition:var(--transition)" id="type-clinic-label">
+            <input type="radio" name="apt-type" value="clinic" id="type-clinic" checked style="accent-color:var(--teal-500)"/>
+            🏥 In-Clinic
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:0.9rem;padding:10px 16px;border-radius:var(--radius-md);border:1px solid var(--glass-border);flex:1;transition:var(--transition)" id="type-online-label">
+            <input type="radio" name="apt-type" value="online" id="type-online" style="accent-color:var(--teal-500)"/>
+            📹 Online
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="booking-date">Select Date</label>
+        <input class="form-input" type="date" id="booking-date" required/>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Select Time Slot</label>
+        <div class="slots-grid" id="slots-grid">
+          <p style="color:var(--text-muted);font-size:0.85rem">Choose a date first</p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="booking-notes">Symptoms / Notes (optional)</label>
+        <textarea class="form-input" id="booking-notes" placeholder="Briefly describe your symptoms or reason for visit..."></textarea>
+      </div>
+
+      <div style="background:rgba(0,201,167,0.06);border:1px solid rgba(0,201,167,0.2);border-radius:var(--radius-md);padding:14px;margin-bottom:20px">
+        <div style="display:flex;justify-content:space-between;font-size:0.9rem">
+          <span style="color:var(--text-secondary)">Consultation Fee</span>
+          <span id="booking-fee" style="font-weight:700;color:var(--teal-400)">₹0</span>
+        </div>
+        <div style="font-size:0.75rem;color:var(--text-muted);margin-top:6px">* Payment collected at clinic / via online gateway</div>
+      </div>
+
+      <button class="btn btn-primary btn-full btn-lg" id="confirm-booking-btn" onclick="confirmBooking()">
+        Confirm Appointment
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Review Modal -->
+<div class="modal-overlay hidden" id="review-modal">
+  <div class="modal-box" style="max-width:440px">
+    <div class="modal-header">
+      <div class="modal-title">Write a Review ⭐</div>
+      <button class="modal-close" onclick="closeModal('review-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Your Rating</label>
+        <div class="star-rating" id="review-stars">
+          <span class="star" data-val="1" onclick="setRating(1)">★</span>
+          <span class="star" data-val="2" onclick="setRating(2)">★</span>
+          <span class="star" data-val="3" onclick="setRating(3)">★</span>
+          <span class="star" data-val="4" onclick="setRating(4)">★</span>
+          <span class="star" data-val="5" onclick="setRating(5)">★</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="review-text">Your Experience</label>
+        <textarea class="form-input" id="review-text" placeholder="Share your experience with this doctor..."></textarea>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="submitReview()">Submit Review</button>
+    </div>
+  </div>
+</div>
+
+<!-- Auth Modals -->
+<div class="modal-overlay hidden" id="login-modal">
+  <div class="modal-box">
+    <div class="modal-header"><div class="modal-title">Welcome Back 👋</div><button class="modal-close" onclick="closeModal('login-modal')">✕</button></div>
+    <div class="modal-body">
+      <form id="login-form">
+        <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="login-email" type="email" required/></div>
+        <div class="form-group"><label class="form-label">Password</label><input class="form-input" id="login-password" type="password" required/></div>
+        <button type="submit" id="login-submit-btn" class="btn btn-primary btn-full btn-lg">Sign In</button>
+      </form>
+      <p style="text-align:center;margin-top:16px;font-size:0.85rem;color:var(--text-muted)">
+        No account? <button id="switch-to-register" style="background:none;color:var(--teal-400);font-weight:600">Sign Up</button>
+      </p>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay hidden" id="register-modal">
+  <div class="modal-box">
+    <div class="modal-header"><div class="modal-title">Create Account 🏥</div><button class="modal-close" onclick="closeModal('register-modal')">✕</button></div>
+    <div class="modal-body">
+      <form id="register-form">
+        <div class="form-group"><label class="form-label">Full Name</label><input class="form-input" id="reg-name" type="text" required/></div>
+        <div class="grid-2">
+          <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="reg-email" type="email" required/></div>
+          <div class="form-group"><label class="form-label">Phone</label><input class="form-input" id="reg-phone" type="tel"/></div>
+        </div>
+        <div class="form-group"><label class="form-label">Password</label><input class="form-input" id="reg-password" type="password" required/></div>
+        <button type="submit" id="register-submit-btn" class="btn btn-primary btn-full btn-lg">Create Account</button>
+      </form>
+      <p style="text-align:center;margin-top:16px;font-size:0.85rem;color:var(--text-muted)">
+        Have account? <button id="switch-to-login" style="background:none;color:var(--teal-400);font-weight:600">Sign In</button>
+      </p>
+    </div>
+  </div>
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/doctor-detail.js"></script>
+</body>
+</html>

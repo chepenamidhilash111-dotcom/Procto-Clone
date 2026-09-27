@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MediCare — Find Doctors, Book Appointments Online</title>
+  <meta name="description" content="MediCare is India's leading health platform. Book appointments with top doctors, order medicines, and book lab tests online. Trusted by millions."/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏥</text></svg>"/>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body class="bg-gradient-main">
+
+<!-- Toast Container -->
+<div id="toast-container"></div>
+
+<!-- ─── Navbar ───────────────────────────────────────────────── -->
+<nav class="navbar" id="main-navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="navbar-logo">
+      <div class="logo-icon">🏥</div>
+      <span class="logo-text">Medi<span class="logo-dot">Care</span></span>
+    </a>
+
+    <div class="navbar-links" id="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="pages/doctors.html">Find Doctors</a>
+      <a href="pages/medicines.html">Medicines</a>
+      <a href="pages/labs.html">Lab Tests</a>
+      <a href="pages/consultation.html">Online Consult</a>
+    </div>
+
+    <div class="navbar-actions">
+      <button id="nav-login-btn" class="btn btn-secondary btn-sm" onclick="openModal('login-modal')">Sign In</button>
+      <button id="nav-register-btn" class="btn btn-primary btn-sm" onclick="openModal('register-modal')">Sign Up</button>
+
+      <div id="nav-user-menu" class="hidden flex gap-8 align-center" style="align-items:center;gap:10px">
+        <a href="pages/profile.html" id="nav-user-avatar" class="user-avatar" title="My Profile">U</a>
+        <button id="logout-btn" class="btn btn-secondary btn-sm">Logout</button>
+      </div>
+
+      <button class="hamburger" id="hamburger-btn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden" style="padding:16px 24px;border-top:1px solid var(--glass-border);background:rgba(6,13,26,0.95)">
+    <div style="display:flex;flex-direction:column;gap:16px;font-size:0.95rem">
+      <a href="index.html">Home</a>
+      <a href="pages/doctors.html">Find Doctors</a>
+      <a href="pages/medicines.html">Medicines</a>
+      <a href="pages/labs.html">Lab Tests</a>
+      <a href="pages/consultation.html">Online Consult</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ─── Hero ─────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span></span> Trusted by 10M+ patients across India
+      </div>
+      <h1 class="hero-title">
+        Your Health,<br/>
+        <span class="gradient-text">Our Priority</span>
+      </h1>
+      <p class="hero-desc">
+        Book appointments with top verified doctors, order medicines at your doorstep, and get lab tests done — all in one place.
+      </p>
+
+      <!-- Search -->
+      <div class="search-bar-hero" id="hero-search-bar">
+        <input type="text" id="hero-search-input" placeholder="Search doctors, specialties, clinics..." autocomplete="off"/>
+        <select id="hero-location-select">
+          <option value="">All Cities</option>
+          <option>Mumbai</option>
+          <option>Delhi</option>
+          <option>Bangalore</option>
+          <option>Chennai</option>
+          <option>Hyderabad</option>
+          <option>Pune</option>
+          <option>Kolkata</option>
+        </select>
+        <button class="search-btn" id="hero-search-btn">🔍 Search</button>
+      </div>
+
+      <!-- Quick Links -->
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px">
+        <span style="font-size:0.8rem;color:var(--text-muted);align-self:center">Popular:</span>
+        <button class="badge badge-teal" onclick="quickSearch('Cardiologist')" style="cursor:pointer">Cardiologist</button>
+        <button class="badge badge-blue" onclick="quickSearch('Dermatologist')" style="cursor:pointer">Dermatologist</button>
+        <button class="badge badge-teal" onclick="quickSearch('Pediatrician')" style="cursor:pointer">Pediatrician</button>
+        <button class="badge badge-blue" onclick="quickSearch('Neurologist')" style="cursor:pointer">Neurologist</button>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat-item">
+          <div class="hero-stat-value">500+</div>
+          <div class="hero-stat-label">Verified Doctors</div>
+        </div>
+        <div class="hero-stat-item">
+          <div class="hero-stat-value">10M+</div>
+          <div class="hero-stat-label">Happy Patients</div>
+        </div>
+        <div class="hero-stat-item">
+          <div class="hero-stat-value">50+</div>
+          <div class="hero-stat-label">Specialties</div>
+        </div>
+        <div class="hero-stat-item">
+          <div class="hero-stat-value">7</div>
+          <div class="hero-stat-label">Cities</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero Visual -->
+    <div class="hero-visual" aria-hidden="true">
+      <div class="hero-card-float" style="top:10%;left:5%">
+        <div class="doctor-preview-card">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+            <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#00C9A7,#2E86FF);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:0.9rem">PS</div>
+            <div>
+              <div style="font-weight:700;font-size:0.9rem">Dr. Priya Sharma</div>
+              <div style="font-size:0.75rem;color:var(--teal-400)">Cardiologist</div>
+            </div>
+          </div>
+          <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:8px">⭐ 4.9 · 15 yrs exp · Mumbai</div>
+          <div style="font-size:0.78rem;color:var(--green-400);background:rgba(74,222,128,0.1);padding:4px 10px;border-radius:100px;display:inline-block">🟢 Available Today</div>
+        </div>
+      </div>
+
+      <div class="hero-card-float" style="top:45%;right:0%;animation-delay:-1.5s">
+        <div class="doctor-preview-card" style="min-width:180px">
+          <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:6px">Today's Appointments</div>
+          <div style="font-size:1.8rem;font-weight:800;color:var(--teal-400);font-family:'Outfit',sans-serif">12</div>
+          <div style="display:flex;gap:6px;margin-top:8px">
+            <div style="height:4px;flex:1;background:var(--teal-500);border-radius:2px"></div>
+            <div style="height:4px;flex:1;background:var(--blue-500);border-radius:2px"></div>
+            <div style="height:4px;width:20px;background:rgba(255,255,255,0.1);border-radius:2px"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-card-float" style="bottom:15%;left:20%;animation-delay:-3s">
+        <div class="doctor-preview-card" style="min-width:200px">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="font-size:1.6rem">✅</div>
+            <div>
+              <div style="font-weight:700;font-size:0.85rem">Appointment Confirmed</div>
+              <div style="font-size:0.72rem;color:var(--teal-400);margin-top:2px">10:30 AM · Tomorrow</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Specialties Section ───────────────────────────────────── -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">Specialties</div>
+      <h2>Find Doctors by <span class="gradient-text">Specialty</span></h2>
+    </div>
+    <div class="specialties-grid" id="specialties-grid">
+      <div class="loading-state"><div class="spinner"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Top Doctors Section ───────────────────────────────────── -->
+<section class="section" style="padding-top:0">
+  <div class="section-inner">
+    <div class="section-header flex-between">
+      <div>
+        <div class="section-tag">Doctors</div>
+        <h2>Top Rated <span class="gradient-text">Doctors</span></h2>
+      </div>
+      <a href="pages/doctors.html" class="btn btn-secondary">View All →</a>
+    </div>
+    <div class="doctors-grid" id="top-doctors-grid">
+      <div class="loading-state"><div class="spinner"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Services Section ─────────────────────────────────────── -->
+<section class="section" style="background:rgba(255,255,255,0.02);padding-top:60px;padding-bottom:60px">
+  <div class="section-inner">
+    <div class="section-header text-center">
+      <div class="section-tag" style="justify-content:center">Services</div>
+      <h2>Everything You Need for <span class="gradient-text">Better Health</span></h2>
+    </div>
+    <div class="grid-3" id="services-grid">
+      <a href="pages/doctors.html" class="glass-card animate-on-scroll" style="padding:32px;text-align:center;text-decoration:none;display:block">
+        <div style="font-size:2.5rem;margin-bottom:16px">👨‍⚕️</div>
+        <h3 style="font-size:1.1rem;margin-bottom:8px">Doctor Consultation</h3>
+        <p style="font-size:0.85rem;color:var(--text-secondary)">Book in-clinic or online appointments with verified specialists</p>
+      </a>
+      <a href="pages/medicines.html" class="glass-card animate-on-scroll" style="padding:32px;text-align:center;text-decoration:none;display:block">
+        <div style="font-size:2.5rem;margin-bottom:16px">💊</div>
+        <h3 style="font-size:1.1rem;margin-bottom:8px">Order Medicines</h3>
+        <p style="font-size:0.85rem;color:var(--text-secondary)">Get medicines delivered at home with guaranteed authenticity</p>
+      </a>
+      <a href="pages/labs.html" class="glass-card animate-on-scroll" style="padding:32px;text-align:center;text-decoration:none;display:block">
+        <div style="font-size:2.5rem;margin-bottom:16px">🔬</div>
+        <h3 style="font-size:1.1rem;margin-bottom:8px">Lab Tests</h3>
+        <p style="font-size:0.85rem;color:var(--text-secondary)">Book diagnostic tests at affordable prices with home collection</p>
+      </a>
+      <a href="pages/consultation.html" class="glass-card animate-on-scroll" style="padding:32px;text-align:center;text-decoration:none;display:block">
+        <div style="font-size:2.5rem;margin-bottom:16px">📹</div>
+        <h3 style="font-size:1.1rem;margin-bottom:8px">Video Consultation</h3>
+        <p style="font-size:0.85rem;color:var(--text-secondary)">Consult with doctors from the comfort of your home via video</p>
+      </a>
+      <a href="pages/profile.html" class="glass-card animate-on-scroll" style="padding:32px;text-align:center;text-decoration:none;display:block">
+        <div style="font-size:2.5rem;margin-bottom:16px">📋</div>
+        <h3 style="font-size:1.1rem;margin-bottom:8px">Health Records</h3>
+        <p style="font-size:0.85rem;color:var(--text-secondary)">Manage your medical records, reports and prescriptions</p>
+      </a>
+      <a href="pages/profile.html" class="glass-card animate-on-scroll" style="padding:32px;text-align:center;text-decoration:none;display:block">
+        <div style="font-size:2.5rem;margin-bottom:16px">🔔</div>
+        <h3 style="font-size:1.1rem;margin-bottom:8px">Smart Reminders</h3>
+        <p style="font-size:0.85rem;color:var(--text-secondary)">Get timely reminders for medicines and upcoming appointments</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Why Us ─────────────────────────────────────────────────── -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-header text-center">
+      <div class="section-tag" style="justify-content:center">Why MediCare</div>
+      <h2>Why Millions Trust <span class="gradient-text">MediCare</span></h2>
+    </div>
+    <div class="grid-4" style="gap:24px">
+      <div class="stat-card animate-on-scroll">
+        <div style="font-size:2rem;margin-bottom:12px">✅</div>
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Verified Doctors</div>
+      </div>
+      <div class="stat-card animate-on-scroll">
+        <div style="font-size:2rem;margin-bottom:12px">⚡</div>
+        <div class="stat-number">&lt;30s</div>
+        <div class="stat-label">Booking Time</div>
+      </div>
+      <div class="stat-card animate-on-scroll">
+        <div style="font-size:2rem;margin-bottom:12px">⭐</div>
+        <div class="stat-number">4.8★</div>
+        <div class="stat-label">Average Rating</div>
+      </div>
+      <div class="stat-card animate-on-scroll">
+        <div style="font-size:2rem;margin-bottom:12px">🔒</div>
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Secure & Private</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Footer ──────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <div class="navbar-logo" style="margin-bottom:16px">
+          <div class="logo-icon">🏥</div>
+          <span class="logo-text">Medi<span class="logo-dot">Care</span></span>
+        </div>
+        <p style="font-size:0.85rem;color:var(--text-muted);max-width:280px;line-height:1.7">
+          India's leading health platform connecting patients with the best doctors, medicines, and diagnostic centers.
+        </p>
+      </div>
+      <div>
+        <div class="footer-col-title">Find Doctors</div>
+        <div class="footer-links">
+          <a href="pages/doctors.html">All Doctors</a>
+          <a href="pages/doctors.html?specialty=Cardiologist">Cardiologists</a>
+          <a href="pages/doctors.html?specialty=Dermatologist">Dermatologists</a>
+          <a href="pages/doctors.html?specialty=Pediatrician">Pediatricians</a>
+          <a href="pages/doctors.html?specialty=Neurologist">Neurologists</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Services</div>
+        <div class="footer-links">
+          <a href="pages/consultation.html">Video Consultation</a>
+          <a href="pages/medicines.html">Order Medicines</a>
+          <a href="pages/labs.html">Lab Tests</a>
+          <a href="pages/profile.html">My Appointments</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Support</div>
+        <div class="footer-links">
+          <a href="#">Help Center</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Contact Us</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2024 MediCare. All rights reserved.</span>
+      <span>Made with ❤️ for better healthcare in India</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ─── Login Modal ──────────────────────────────────────────── -->
+<div class="modal-overlay hidden" id="login-modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title">Welcome Back 👋</div>
+      <button class="modal-close" onclick="closeModal('login-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <form id="login-form">
+        <div class="form-group">
+          <label class="form-label" for="login-email">Email Address</label>
+          <input class="form-input" id="login-email" type="email" placeholder="you@example.com" required/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="login-password">Password</label>
+          <input class="form-input" id="login-password" type="password" placeholder="Your password" required/>
+        </div>
+        <button type="submit" id="login-submit-btn" class="btn btn-primary btn-full btn-lg">Sign In</button>
+      </form>
+      <p style="text-align:center;margin-top:20px;font-size:0.88rem;color:var(--text-muted)">
+        Don't have an account?
+        <button id="switch-to-register" style="background:none;color:var(--teal-400);font-weight:600;font-size:0.88rem">Sign Up</button>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ─── Register Modal ───────────────────────────────────────── -->
+<div class="modal-overlay hidden" id="register-modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title">Create Account 🏥</div>
+      <button class="modal-close" onclick="closeModal('register-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <form id="register-form">
+        <div class="form-group">
+          <label class="form-label" for="reg-name">Full Name</label>
+          <input class="form-input" id="reg-name" type="text" placeholder="Dr. / Mr. / Mrs. Your Name" required/>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label" for="reg-email">Email</label>
+            <input class="form-input" id="reg-email" type="email" placeholder="you@example.com" required/>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-phone">Phone</label>
+            <input class="form-input" id="reg-phone" type="tel" placeholder="+91 9876543210"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reg-password">Password</label>
+          <input class="form-input" id="reg-password" type="password" placeholder="Min 6 characters" required/>
+        </div>
+        <button type="submit" id="register-submit-btn" class="btn btn-primary btn-full btn-lg">Create Account</button>
+      </form>
+      <p style="text-align:center;margin-top:20px;font-size:0.88rem;color:var(--text-muted)">
+        Already have an account?
+        <button id="switch-to-login" style="background:none;color:var(--teal-400);font-weight:600;font-size:0.88rem">Sign In</button>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ─── Scripts ──────────────────────────────────────────────── -->
+<script src="js/api.js"></script>
+<script src="js/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Profile — MediCare</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏥</text></svg>"/>
+  <link rel="stylesheet" href="../css/style.css"/>
+</head>
+<body class="bg-gradient-main">
+<div id="toast-container"></div>
+
+<nav class="navbar" id="main-navbar">
+  <div class="navbar-inner">
+    <a href="../index.html" class="navbar-logo"><div class="logo-icon">🏥</div><span class="logo-text">Medi<span class="logo-dot">Care</span></span></a>
+    <div class="navbar-links">
+      <a href="../index.html">Home</a><a href="doctors.html">Find Doctors</a>
+      <a href="medicines.html">Medicines</a><a href="labs.html">Lab Tests</a><a href="consultation.html">Online Consult</a>
+    </div>
+    <div class="navbar-actions">
+      <button id="nav-login-btn" class="btn btn-secondary btn-sm" onclick="openModal('login-modal')">Sign In</button>
+      <button id="nav-register-btn" class="btn btn-primary btn-sm" onclick="openModal('register-modal')">Sign Up</button>
+      <div id="nav-user-menu" class="hidden" style="display:none;align-items:center;gap:10px">
+        <a href="profile.html" id="nav-user-avatar" class="user-avatar">U</a>
+        <button id="logout-btn" class="btn btn-secondary btn-sm">Logout</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="page-wrapper" id="profile-wrapper">
+  <div class="loading-state"><div class="spinner"></div><p>Loading profile...</p></div>
+</div>
+
+<!-- Auth Modals -->
+<div class="modal-overlay hidden" id="login-modal">
+  <div class="modal-box">
+    <div class="modal-header"><div class="modal-title">Welcome Back 👋</div><button class="modal-close" onclick="closeModal('login-modal')">✕</button></div>
+    <div class="modal-body">
+      <form id="login-form">
+        <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="login-email" type="email" required/></div>
+        <div class="form-group"><label class="form-label">Password</label><input class="form-input" id="login-password" type="password" required/></div>
+        <button type="submit" id="login-submit-btn" class="btn btn-primary btn-full btn-lg">Sign In</button>
+      </form>
+      <p style="text-align:center;margin-top:16px;font-size:0.85rem;color:var(--text-muted)">
+        No account? <button id="switch-to-register" style="background:none;color:var(--teal-400);font-weight:600">Sign Up</button>
+      </p>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay hidden" id="register-modal">
+  <div class="modal-box">
+    <div class="modal-header"><div class="modal-title">Create Account 🏥</div><button class="modal-close" onclick="closeModal('register-modal')">✕</button></div>
+    <div class="modal-body">
+      <form id="register-form">
+        <div class="form-group"><label class="form-label">Full Name</label><input class="form-input" id="reg-name" type="text" required/></div>
+        <div class="grid-2">
+          <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="reg-email" type="email" required/></div>
+          <div class="form-group"><label class="form-label">Phone</label><input class="form-input" id="reg-phone" type="tel"/></div>
+        </div>
+        <div class="form-group"><label class="form-label">Password</label><input class="form-input" id="reg-password" type="password" required/></div>
+        <button type="submit" id="register-submit-btn" class="btn btn-primary btn-full btn-lg">Create Account</button>
+      </form>
+      <p style="text-align:center;margin-top:16px;font-size:0.85rem;color:var(--text-muted)">
+        Have account? <button id="switch-to-login" style="background:none;color:var(--teal-400);font-weight:600">Sign In</button>
+      </p>
+    </div>
+  </div>
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/profile.js"></script>
+</body>
+</html>

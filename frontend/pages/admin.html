@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard — MediCare</title>
+  <meta name="description" content="MediCare Admin control panel and statistics analytics."/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>"/>
+  <link rel="stylesheet" href="../css/style.css"/>
+</head>
+<body class="bg-gradient-main">
+
+<!-- Toast Container -->
+<div id="toast-container"></div>
+
+<!-- Navbar -->
+<nav class="navbar" id="main-navbar">
+  <div class="navbar-inner">
+    <a href="../index.html" class="navbar-logo">
+      <div class="logo-icon">🏥</div>
+      <span class="logo-text">Medi<span class="logo-dot">Care Admin</span></span>
+    </a>
+
+    <div class="navbar-links" id="nav-links">
+      <a href="../index.html">Main Website</a>
+      <a href="doctors.html">Doctors</a>
+      <a href="admin.html" class="active">Dashboard</a>
+    </div>
+
+    <div class="navbar-actions">
+      <div id="nav-user-menu" class="flex gap-8 align-center" style="align-items:center;gap:10px">
+        <a href="profile.html" id="nav-user-avatar" class="user-avatar" title="My Profile">A</a>
+        <button id="logout-btn" class="btn btn-secondary btn-sm">Logout</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Admin Dashboard Container -->
+<div class="container" style="padding-top: 100px; padding-bottom: 60px;">
+  
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 30px; flex-wrap:wrap; gap:16px;">
+    <div>
+      <span class="badge badge-purple" style="margin-bottom:8px; display:inline-block;">👑 Admin Control Panel</span>
+      <h1>Platform <span class="gradient-text">Analytics & Management</span></h1>
+    </div>
+    <button class="btn btn-primary" onclick="loadAdminStats()">🔄 Refresh Data</button>
+  </div>
+
+  <!-- KPI Cards Grid -->
+  <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:20px; margin-bottom: 40px;">
+    <div class="glass-card" style="padding: 20px;">
+      <span style="font-size:0.85rem; color:var(--text-muted);">Total Revenue</span>
+      <h2 id="stat-revenue" style="color:var(--teal-400); margin-top:4px;">₹0</h2>
+    </div>
+    <div class="glass-card" style="padding: 20px;">
+      <span style="font-size:0.85rem; color:var(--text-muted);">Total Appointments</span>
+      <h2 id="stat-appointments" style="color:var(--blue-400); margin-top:4px;">0</h2>
+    </div>
+    <div class="glass-card" style="padding: 20px;">
+      <span style="font-size:0.85rem; color:var(--text-muted);">Verified Doctors</span>
+      <h2 id="stat-doctors" style="color:var(--purple-400); margin-top:4px;">0</h2>
+    </div>
+    <div class="glass-card" style="padding: 20px;">
+      <span style="font-size:0.85rem; color:var(--text-muted);">Registered Patients</span>
+      <h2 id="stat-patients" style="color:var(--orange-400); margin-top:4px;">0</h2>
+    </div>
+  </div>
+
+  <!-- Recent Appointments Table -->
+  <div class="glass-card" style="padding: 24px; margin-bottom: 40px;">
+    <h3 style="margin-bottom:16px;">Recent Appointments</h3>
+    <div style="overflow-x:auto;">
+      <table style="width:100%; border-collapse:collapse; text-align:left;">
+        <thead>
+          <tr style="border-bottom:1px solid var(--glass-border); color:var(--text-muted); font-size:0.85rem;">
+            <th style="padding:12px;">ID</th>
+            <th style="padding:12px;">Patient</th>
+            <th style="padding:12px;">Doctor</th>
+            <th style="padding:12px;">Date & Time</th>
+            <th style="padding:12px;">Fee</th>
+            <th style="padding:12px;">Status</th>
+          </tr>
+        </thead>
+        <tbody id="recent-appointments-tbody">
+          <tr><td colspan="6" style="text-align:center; padding:20px; color:var(--text-muted);">Loading data...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/admin.js"></script>
+</body>
+</html>
