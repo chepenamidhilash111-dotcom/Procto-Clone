@@ -1,0 +1,17 @@
+{
+  "name": "practo-clone",
+  "version": "1.0.0",
+  "description": "A Practo Clone with Flask backend and HTML/CSS/JS frontend",
+  "scripts": {
+    "start": "npx serve frontend -l 3000",
+    "frontend": "npx serve frontend -l 3000",
+    "backend": "python backend/app.py",
+    "dev": "npm run backend & npm run frontend"
+  },
+  "keywords": ["practo", "clone", "healthcare", "flask"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "serve": "^14.2.3"
+  }
+}
